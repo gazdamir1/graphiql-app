@@ -38,6 +38,16 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  --bg-color: #1f1f1f;
+  --border-color: #6a9949;
+  --text-color: #9cdcf0;
+  --component-color: #2a2a2a;
+
+  --lightSwitcher: var(--text-color);
+  --darkSwitcher: var(--bg-color);
+
+  --horizontal-padding: 200px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -104,4 +114,12 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  background-color: var(--bg-color);
 }

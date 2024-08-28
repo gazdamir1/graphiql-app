@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--component-color);
+  padding: 10px var(--horizontal-padding);
+  color: var(--text-color);
+
+  .languageToggle {
+    display: flex;
+  }
+  .signNavigation {
+    display: flex;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,20 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--component-color);
+  padding: 10px var(--horizontal-padding);
+  color: var(--text-color);
+
+  .githubLink {
+    text-decoration: none;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+  .githubLink:hover {
+    color: blueviolet;
+  }
+  .year {
+    display: flex;
+  }
+}

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import Footer from "../Footer/Footer";
-import Header from "../Header/Header";
-import styles from "./Main.module.scss";
+import Link from "next/link"
+import Footer from "../Footer/Footer"
+import Header from "../Header/Header"
+import styles from "./Main.module.scss"
 
 const Main = () => {
   if (false) {
@@ -14,7 +14,7 @@ const Main = () => {
           <Link href="/history">History</Link>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -25,7 +25,7 @@ const Main = () => {
         <Link href="/sign-up">Sign Up</Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Main;
+export default Main

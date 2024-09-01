@@ -47,46 +47,37 @@
   --lightSwitcher: var(--text-color);
   --darkSwitcher: var(--bg-color);
 
+  --vertical-padding: 10px;
   --horizontal-padding: 200px;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
-
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
-
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
+  --header-height: 10vh;
 }
 
 * {
-  box-sizing: border-box;
   padding: 0;
   margin: 0;
+  box-sizing: border-box !important;
+}
+
+html {
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: var(--bg-color);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(133, 133, 133);
+    background-clip: padding-box;
+    border: 2px solid var(--bg-color);
+    border-radius: 7px;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-color: var(--bg-color) var(--text-color);
+    scrollbar-width: thin;
+  }
 }
 
 html,
@@ -95,31 +86,24 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 a {
   color: inherit;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
-.mainContainer {
+.rootWrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
   background-color: var(--bg-color);
+
+  .mainWrapper {
+    margin-top: 10vh;
+    display: flex;
+    min-height: 80vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }

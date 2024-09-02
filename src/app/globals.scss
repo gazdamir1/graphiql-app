@@ -61,10 +61,15 @@
 
 html {
   overflow-y: scroll;
+  background-color: var(--bg-color);
+
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 9px;
     height: 10px;
     background-color: var(--bg-color);
+    border: solid rgb(133, 133, 133) 1px;
+    box-sizing: border-box;
+    border-radius: 7px;
   }
 
   &::-webkit-scrollbar-thumb {

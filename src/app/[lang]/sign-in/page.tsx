@@ -1,18 +1,21 @@
+"use client"
+import { useTranslation } from "react-i18next"
 import styles from "./page.module.scss"
 
-const signIn = () => {
+const SignIn = () => {
+  const { t } = useTranslation("common")
   return (
     <main className={styles.main}>
       <div className={styles.signInBox}>
-        <h2>Sign In / Sign Up</h2>
+        <h2>{t("sign-in")}</h2>
         <form>
-          <input type="email" placeholder="Email" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Submit</button>
+          <input type="email" placeholder={t("email")} required />
+          <input type="password" placeholder={t("password")} required />
+          <button type="submit">{t("submit")}</button>
         </form>
       </div>
     </main>
   )
 }
 
-export default signIn
+export default SignIn

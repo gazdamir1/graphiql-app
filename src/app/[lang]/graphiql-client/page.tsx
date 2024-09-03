@@ -1,50 +1,55 @@
+"use client"
+
+import { useTranslation } from "react-i18next"
 import styles from "./page.module.scss"
 
-const graphiQL = () => {
+const GraphiQL = () => {
+  const { t } = useTranslation("common")
+
   return (
     <div className={styles.graphiqlClientContainer}>
-      <h2>GraphiQL Client</h2>
+      <h2>GraphiQL {t("client")}</h2>
       <div className={styles.clientSection}>
         <div className={styles.inputGroup}>
-          <label>Endpoint URL:</label>
-          <input type="text" placeholder="Enter Endpoint URL" />
+          <label>{t("endpoint-URL")}:</label>
+          <input type="text" placeholder={t("enter-endpoint-URL")} />
         </div>
         <div className={styles.inputGroup}>
-          <label>SDL URL:</label>
-          <input type="text" placeholder="Enter SDL URL" />
+          <label>{t("sdl-url")}:</label>
+          <input type="text" placeholder={t("enter-sdl-url")} />
         </div>
         <div className={styles.headersSection}>
-          <label>Headers:</label>
-          <button type="button">Add Header</button>
+          <label>{t("headers")}:</label>
+          <button type="button">{t("add-header")}</button>
           <div className={styles.headerRow}>
-            <input type="text" placeholder="Header Key" />
-            <input type="text" placeholder="Header Value" />
+            <input type="text" placeholder={t("header-key")} />
+            <input type="text" placeholder={t("header-value")} />
           </div>
         </div>
         <div className={styles.bodySection}>
-          <label>Query:</label>
-          <textarea placeholder="GraphQL Query Editor"></textarea>
+          <label>{t("query")}:</label>
+          <textarea placeholder={t("graphql-query-editor")}></textarea>
         </div>
         <div className={styles.bodySection}>
-          <label>Variables:</label>
-          <textarea placeholder="Variables Editor"></textarea>
+          <label>{t("variables")}:</label>
+          <textarea placeholder={t("variables-editor")}></textarea>
         </div>
       </div>
       <div className={styles.responseSection}>
-        <label>Status:</label>
+        <label>{t("status")}:</label>
         <input
           className={styles.status}
           type="text"
-          placeholder="HTTP Status Code"
+          placeholder={t("http-status-code")}
           readOnly
         />
-        <label>Body:</label>
-        <textarea placeholder="Read-Only JSON Viewer" readOnly></textarea>
+        <label>{t("body")}:</label>
+        <textarea placeholder={t("read-only-json-viewer")} readOnly></textarea>
       </div>
       <div className={styles.documentationSection}>
-        <label>Documentation:</label>
+        <label>{t("documentation")}:</label>
         <textarea
-          placeholder="Visible if SDL Response Success"
+          placeholder={t("visible-if-sdl-response-success")}
           readOnly
         ></textarea>
       </div>
@@ -52,4 +57,4 @@ const graphiQL = () => {
   )
 }
 
-export default graphiQL
+export default GraphiQL

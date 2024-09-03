@@ -7,8 +7,10 @@
   "email": "Email",
   "password": "Password",
   "submit": "Submit",
+
   "client": "Client",
   "endpoint-URL": "Endpoint URL",
+  "enter-endpoint-URL": "Endpoint URL",
   "headers": "Headers",
   "add-header": "Add Header",
   "header-key": "Header Key",
@@ -18,14 +20,15 @@
   "status": "Status",
   "http-status-code": "HTTP Status Code",
   "read-only-json-viewer": "Read Only JSON Viewer",
-  "enter": "Enter",
   "sdl-url": "SDL URL",
+  "enter-sdl-url": "Enter SDL URL",
   "query": "Query",
   "graphql-query-editor": "GraphQL Query Editor",
   "variables": "Variables",
   "variables-editor": "Variables Editor",
   "documentation": "Documentation",
   "visible-if-sdl-response-success": "Visible if SDL Response Success",
-  "empty-history-message": "You haven&apos;t executed any requests",
-  "empty-history-message2": "It&apos;s empty here. Try"
+  
+  "empty-history-message": "You haven't executed any requests",
+  "empty-history-message2": "It's empty here. Try"
 }

@@ -1,7 +1,12 @@
+"use client"
+
 import { useState } from "react"
 import styles from "./page.module.scss"
+import { useTranslation } from "react-i18next"
 
-const history = () => {
+const History = () => {
+  const { t } = useTranslation("common")
+
   if (false) {
     return (
       <div className={styles.historyPanelContainer}>
@@ -18,14 +23,14 @@ const history = () => {
   } else {
     return (
       <div className={styles.emptyState}>
-        <p>You haven&apos;t executed any requests</p>
-        <p>It&apos;s empty here. Try:</p>
+        <p>{t("empty-history-message")}</p>
+        <p>{t("empty-history-message2")}:</p>
         <div className={styles.buttonGroup}>
           <button type="button" className={styles.restButton}>
-            REST Client
+            REST {t("client")}
           </button>
           <button type="button" className={styles.graphiqlButton}>
-            GraphiQL Client
+            GraphiQL {t("client")}
           </button>
         </div>
       </div>
@@ -33,4 +38,4 @@ const history = () => {
   }
 }
 
-export default history
+export default History

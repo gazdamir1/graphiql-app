@@ -5,8 +5,10 @@ import styles from "./Header.module.scss";
 import Image from "next/image";
 import LangToggler from "../LangToggler/LangToggler";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  const { t } = useTranslation("common");
   const [isSticky, setSticky] = useState(false);
 
   const handleScroll = () => {
@@ -32,8 +34,8 @@ const Header = () => {
         <LangToggler />
       </div>
       <div className={styles.signNavigation}>
-        <Link href="/sign-in">Sign-in</Link>|
-        <Link href="/sign-up">Sign-up</Link>
+        <Link href="/sign-in">{t("sign-in")}</Link>|
+        <Link href="/sign-up">{t("sign-up")}</Link>
       </div>
     </header>
   );

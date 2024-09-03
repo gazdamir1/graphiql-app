@@ -35,7 +35,7 @@
 }
 
 .toggleButton .knobs:before {
-  content: "ENG";
+  content: "RUS";
   position: absolute;
   top: 4px;
   left: 4px;
@@ -53,7 +53,7 @@
 }
 
 .toggleButton .checkbox:checked + .knobs:before {
-  content: "RUS";
+  content: "ENG";
   left: 42px;
   background-color: var(--bg-color);
   color: var(--text-color);

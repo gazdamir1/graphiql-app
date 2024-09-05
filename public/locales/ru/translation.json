@@ -1,4 +1,6 @@
 {
+  "title": "GraphiQL приложение",
+  "description": "Веб-сайт для использования GraphiQL",
   "greeting": "Добро пожаловать",
   "sign-in": "Войти",
   "sign-up": "Зарегистрироваться",

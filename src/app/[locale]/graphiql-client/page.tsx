@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useTranslation } from "react-i18next"
-import styles from "./page.module.scss"
+import styles from "./page.module.scss";
+import { useTranslations } from "next-intl";
 
 const GraphiQL = () => {
-  const { t } = useTranslation("common")
+  const t = useTranslations();
 
   return (
     <div className={styles.graphiqlClientContainer}>
@@ -54,7 +54,7 @@ const GraphiQL = () => {
         ></textarea>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default GraphiQL
+export default GraphiQL;

@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useTranslation } from "react-i18next"
-import styles from "./page.module.scss"
+import styles from "./page.module.scss";
+import { useTranslations } from "next-intl";
 
 const Rest = () => {
-  const { t } = useTranslation("common")
+  const t = useTranslations();
   return (
     <div className={styles.restClientContainer}>
       <h2>REST {t("client")}</h2>
@@ -45,7 +45,7 @@ const Rest = () => {
         <textarea placeholder={t("read-only-json-viewer")} readOnly></textarea>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Rest
+export default Rest;

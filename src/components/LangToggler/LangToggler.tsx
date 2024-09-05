@@ -1,35 +1,27 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useTranslation } from "react-i18next";
+import { useRouter, usePathname } from "@/i18n/routing";
 import { useEffect, useState } from "react";
 import styles from "./LangToggler.module.scss";
+import { useLocale } from "next-intl";
 
 const LangToggler = () => {
   const router = useRouter();
-  const { i18n } = useTranslation();
-
-  const [isEnglish, setIsEnglish] = useState(i18n.language === "en");
+  const pathname = usePathname();
+  const locale = useLocale();
+  const [isEnglish, setIsEnglish] = useState(locale === "en");
 
   useEffect(() => {
-    setIsEnglish(i18n.language === "en");
-  }, [i18n.language]);
+    setIsEnglish(locale === "en");
+  }, [locale]);
 
-  const changeLanguage = (locale: string) => {
-    const path = window.location.pathname;
-    const segments = path.split("/").filter(Boolean);
-    if (["en", "ru"].includes(segments[0])) {
-      segments.shift();
-    }
-    const newPath = `/${locale}/${segments.join("/")}`;
-    i18n.changeLanguage(locale);
-    router.push(newPath);
+  const changeLanguage = (locale: "en" | "ru" | undefined) => {
+    router.replace(pathname, { locale });
   };
 
   const handleToggle = () => {
     const newLocale = isEnglish ? "ru" : "en";
     changeLanguage(newLocale);
-    setIsEnglish(!isEnglish);
   };
 
   return (

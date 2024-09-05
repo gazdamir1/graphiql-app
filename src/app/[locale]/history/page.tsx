@@ -1,11 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import styles from "./page.module.scss"
-import { useTranslation } from "react-i18next"
+import { useTranslations } from "next-intl";
+import styles from "./page.module.scss";
 
 const History = () => {
-  const { t } = useTranslation("common")
+  const t = useTranslations();
 
   if (false) {
     return (
@@ -19,7 +18,7 @@ const History = () => {
           </div>
         </>
       </div>
-    )
+    );
   } else {
     return (
       <div className={styles.emptyState}>
@@ -34,8 +33,8 @@ const History = () => {
           </button>
         </div>
       </div>
-    )
+    );
   }
-}
+};
 
-export default History
+export default History;

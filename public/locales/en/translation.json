@@ -1,4 +1,6 @@
 {
+  "title": "GraphiQL App",
+  "description": "The app for using graphiql and postman functionality",
   "greeting": "Welcome",
   "sign-in": "Sign In",
   "sign-up": "Sign Up",
@@ -28,7 +30,7 @@
   "variables-editor": "Variables Editor",
   "documentation": "Documentation",
   "visible-if-sdl-response-success": "Visible if SDL Response Success",
-  
+
   "empty-history-message": "You haven't executed any requests",
   "empty-history-message2": "It's empty here. Try"
 }

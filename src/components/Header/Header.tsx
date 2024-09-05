@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import styles from "./Header.module.scss";
 import Image from "next/image";
 import LangToggler from "../LangToggler/LangToggler";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 
 const Header = () => {
-  const { t } = useTranslation("common");
+  const t = useTranslations();
   const [isSticky, setSticky] = useState(false);
 
   const handleScroll = () => {
@@ -29,10 +29,14 @@ const Header = () => {
 
   return (
     <header className={`${styles.header} ${isSticky ? styles.sticky : ""}`}>
-      <Image src="/team-logo.svg" alt="" width={30} height={30} />
+      <Link href="/">
+        <Image src="/team-logo.svg" alt="Logo" width={30} height={30} />
+      </Link>
+
       <div className={styles.languageToggle}>
         <LangToggler />
       </div>
+
       <div className={styles.signNavigation}>
         <Link href="/sign-in">{t("sign-in")}</Link>|
         <Link href="/sign-up">{t("sign-up")}</Link>

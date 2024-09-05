@@ -1,20 +1,20 @@
 "use client";
 
 import styles from "./page.module.scss";
-import Link from "next/link";
-import { useTranslation } from "react-i18next";
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
-  const { t } = useTranslation("common");
+  const t = useTranslations();
 
-  if (false) {
+  if (true) {
     return (
       <div className={styles.homeContent}>
-        <h1>Welcome Back, [Username] </h1>
+        <h1>{t("second-greeting")}, [Username] </h1>
         <div className={styles.navigation}>
-          <Link href="/rest-client">Rest Client</Link>|
-          <Link href="/graphiql-client">GraphiQL Client</Link>|
-          <Link href="/history">History</Link>
+          <Link href="/rest-client">Rest {t("client")}</Link>|
+          <Link href="/graphiql-client">GraphiQL {t("client")}</Link>|
+          <Link href="/history">{t("history")}</Link>
         </div>
       </div>
     );

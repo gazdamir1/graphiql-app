@@ -1,9 +1,10 @@
-"use client"
-import { useTranslation } from "react-i18next"
-import styles from "./page.module.scss"
+"use client";
+
+import styles from "./page.module.scss";
+import { useTranslations } from "next-intl";
 
 const SignIn = () => {
-  const { t } = useTranslation("common")
+  const t = useTranslations();
   return (
     <main className={styles.main}>
       <div className={styles.signInBox}>
@@ -15,7 +16,7 @@ const SignIn = () => {
         </form>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

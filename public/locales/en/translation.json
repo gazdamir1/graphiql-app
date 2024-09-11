@@ -9,7 +9,7 @@
   "email": "Email",
   "password": "Password",
   "submit": "Submit",
-
+  "logout": "Log Out",
   "client": "Client",
   "endpoint-URL": "Endpoint URL",
   "enter-endpoint-URL": "Endpoint URL",
@@ -32,5 +32,16 @@
   "visible-if-sdl-response-success": "Visible if SDL Response Success",
 
   "empty-history-message": "You haven't executed any requests",
-  "empty-history-message2": "It's empty here. Try"
+  "empty-history-message2": "It's empty here. Try",
+
+  "error-user-not-found": "User is not found",
+  "error-wrong-password": "Wrong Password",
+  "error-sign-in": "Sign In Error",
+
+  "error-password-message": "Password must contain at least: ",
+  "error-password-length": "8 characters",
+  "error-password-uppercase": "1 capital letter",
+  "error-password-lowercase": "1 lowercase letter",
+  "error-password-number": "1 number",
+  "error-password-special-char": "1 special char"
 }

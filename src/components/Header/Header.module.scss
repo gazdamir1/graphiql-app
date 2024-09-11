@@ -20,6 +20,15 @@
   .signNavigation {
     display: flex;
     gap: 10px;
+
+    .signNav {
+      display: flex;
+      cursor: pointer;
+      &:hover {
+        scale: 1.01;
+        color: blueviolet;
+      }
+    }
   }
 
   &.sticky {

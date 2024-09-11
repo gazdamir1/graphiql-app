@@ -1,25 +1,31 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { auth } from "../authorization/firebase"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import styles from "./page.module.scss"
-import { useTranslations } from "next-intl"
-import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react";
+import { auth } from "../../../authorization/firebase";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  User,
+} from "firebase/auth";
+import styles from "./page.module.scss";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { FirebaseError } from "firebase/app";
 
 const SignIn = () => {
-  const t = useTranslations()
-  const [email, setEmail] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
-  const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
+  const t = useTranslations();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email || !password) {
-      setError(t("error-empty-fields"))
-      return
+      setError(t("error-empty-fields"));
+      return;
     }
 
     try {
@@ -27,22 +33,30 @@ const SignIn = () => {
         auth,
         email,
         password
-      )
-      const user = userCredential.user
-      console.log("User signed in:", user)
-      router.push("/")
-    } catch (error: any) {
-      // TODO: переделать и стилизовать код об ошибке
-      if (error.code === "auth/user-not-found") {
-        setError(t("error-user-not-found"))
-      } else if (error.code === "auth/wrong-password") {
-        setError(t("error-wrong-password"))
-      } else {
-        setError(t("error-sign-in"))
+      );
+      const user = userCredential.user;
+      console.log("User signed in:", user);
+      document.cookie = "authToken=fakeToken123; path=/";
+      router.push("/");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      switch (firebaseError.code) {
+        case "auth/user-not-found":
+          setError(t("error-user-not-found"));
+          break;
+        case "auth/wrong-password":
+          setError(t("error-wrong-password"));
+          break;
+        case "auth/invalid-email":
+          setError(t("error-invalid-email"));
+          break;
+        default:
+          setError(t("error-sign-in"));
+          break;
       }
-      console.error("Error signing in:", error)
+      console.error("Error signing in:", firebaseError);
     }
-  }
+  };
 
   return (
     <main className={styles.main}>
@@ -64,11 +78,11 @@ const SignIn = () => {
             required
           />
           <button type="submit">{t("submit")}</button>
-          {error && <p className={styles.error}>{error}</p>}{" "}
+          {error && <p className={styles.error}>{error}</p>}
         </form>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

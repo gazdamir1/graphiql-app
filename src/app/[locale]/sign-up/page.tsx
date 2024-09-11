@@ -1,39 +1,60 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { auth } from "../authorization/firebase"
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import styles from "./page.module.scss"
-import { useTranslations } from "next-intl"
-import { useRouter } from "@/i18n/routing"
+import { useEffect, useState } from "react";
+import { auth } from "../../../authorization/firebase";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth";
+import styles from "./page.module.scss";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/routing";
+import { FirebaseError } from "firebase/app";
 
 const SignUp = () => {
-  const t = useTranslations()
-  const [email, setEmail] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
-  const [error, setError] = useState<string | null>(null) // Для хранения сообщений об ошибках
-  const [success, setSuccess] = useState<boolean>(false) // Для хранения статуса успешной регистрации
-  const router = useRouter()
+  const t = useTranslations();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+  const router = useRouter();
 
-  // Функция для проверки валидности пароля
-  const isValidPassword = (password: string): boolean => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-    return passwordRegex.test(password)
-  }
+  const validatePassword = (password: string): string | null => {
+    const errors: string[] = [];
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    // Валидация данных на клиенте
-    if (!email || !password) {
-      setError(t("error-empty-fields"))
-      return
+    if (password.length < 8) {
+      errors.push(t("error-password-length"));
+    }
+    if (!/[A-Z]/.test(password)) {
+      errors.push(t("error-password-uppercase"));
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push(t("error-password-lowercase"));
+    }
+    if (!/\d/.test(password)) {
+      errors.push(t("error-password-number"));
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      errors.push(t("error-password-special-char"));
     }
 
-    if (!isValidPassword(password)) {
-      setError(t("error-weak-password")) // Убедитесь, что это сообщение определено в ваших переводах
-      return
+    return errors.length > 0 ? errors.join(", ") : null;
+  };
+
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError(t("error-empty-fields"));
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
     }
 
     try {
@@ -41,28 +62,32 @@ const SignUp = () => {
         auth,
         email,
         password
-      )
-      const user = userCredential.user
-      console.log("User signed up:", user)
-      setSuccess(true) // Успешная регистрация
-      setError(null) // Очистка предыдущих ошибок
-      router.push("/") // Перенаправление на домашнюю страницу после успешной регистрации
-    } catch (error: any) {
-      // Обработка ошибок аутентификации
-      if (error.code === "auth/email-already-in-use") {
-        setError(t("error-email-already-in-use"))
-      } else if (error.code === "auth/invalid-email") {
-        setError(t("error-invalid-email"))
-
-        //TODO: Добавить разные проверки на сложность пароля
-      } else if (error.code === "auth/weak-password") {
-        setError(t("error-weak-password"))
-      } else {
-        setError(t("error-sign-up")) // Общее сообщение об ошибке
+      );
+      const user = userCredential.user;
+      console.log("User signed up:", user);
+      setSuccess(true);
+      setError(null);
+      document.cookie = "authToken=fakeToken123; path=/";
+      router.push("/");
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      switch (firebaseError.code) {
+        case "auth/email-already-in-use":
+          setError(t("error-email-already-in-use"));
+          break;
+        case "auth/invalid-email":
+          setError(t("error-invalid-email"));
+          break;
+        case "auth/weak-password":
+          setError(t("error-weak-password"));
+          break;
+        default:
+          setError(t("error-sign-up"));
+          break;
       }
-      console.error("Error signing up:", error)
+      console.error("Error signing up:", firebaseError);
     }
-  }
+  };
 
   return (
     <main className={styles.main}>
@@ -84,16 +109,17 @@ const SignUp = () => {
             required
           />
           <button type="submit">{t("submit")}</button>
-          {error && <p className={styles.error}>{error}</p>}{" "}
-          {/* Отображение сообщений об ошибках */}
-          {success && (
-            <p className={styles.success}>{t("success-sign-up")}</p>
-          )}{" "}
-          {/* Отображение успешного сообщения */}
+          {error && (
+            <p className={styles.error}>
+              {t("error-password-message")}
+              {error}
+            </p>
+          )}
+          {success && <p className={styles.success}>{t("success-sign-up")}</p>}
         </form>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

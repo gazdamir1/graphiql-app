@@ -1,29 +1,27 @@
-"use client"
+"use client";
 
-import styles from "./page.module.scss"
-import { Link } from "@/i18n/routing"
-import { useTranslations } from "next-intl"
-import { useState, useEffect } from "react"
-import { auth } from "./authorization/firebase"
-import { onAuthStateChanged } from "firebase/auth"
+import styles from "./page.module.scss";
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
+import { auth } from "../../authorization/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Home() {
-  const t = useTranslations()
-  const [email, setEmail] = useState<string | null>(null)
+  const t = useTranslations();
+  const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
-    // Проверка состояния аутентификации и получение email текущего пользователя
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setEmail(user.email) // Устанавливаем email пользователя
+        setEmail(user.email);
       } else {
-        setEmail(null) // Если пользователь не аутентифицирован
+        setEmail(null);
       }
-    })
+    });
 
-    // Очистка подписки на изменения состояния аутентификации
-    return () => unsubscribe()
-  }, [])
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className={styles.homeContent}>
@@ -48,5 +46,5 @@ export default function Home() {
         </div>
       )}
     </div>
-  )
+  );
 }

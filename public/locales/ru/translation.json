@@ -42,5 +42,7 @@
   "error-password-uppercase": "1 заглавную букву",
   "error-password-lowercase": "1 строчную букву",
   "error-password-number": "1 цифру",
-  "error-password-special-char": "1 специальный символ"
+  "error-password-special-char": "1 специальный символ",
+
+  "send-request": "Send request"
 }

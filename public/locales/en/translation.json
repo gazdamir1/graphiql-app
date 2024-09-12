@@ -43,5 +43,7 @@
   "error-password-uppercase": "1 capital letter",
   "error-password-lowercase": "1 lowercase letter",
   "error-password-number": "1 number",
-  "error-password-special-char": "1 special char"
+  "error-password-special-char": "1 special char",
+
+  "send-request": "Send request"
 }

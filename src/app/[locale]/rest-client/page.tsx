@@ -47,21 +47,9 @@ const Rest = () => {
 
   // Отправка запроса
   const sendRequest = async () => {
-    const encodedUrl = encodeBase64(url)
-    const encodedBody = body ? encodeBase64(body) : ""
-
-    const queryParams = headers
-      .filter((header) => header.key && header.value)
-      .map(
-        (header) =>
-          `${encodeURIComponent(header.key)}=${encodeURIComponent(header.value)}`
-      )
-      .join("&")
-
-    const requestUrl = `/${method}/${encodedUrl}/${encodedBody}${queryParams ? "?" + queryParams : ""}`
-
+    // Запрос напрямую на указанный URL
     try {
-      const response = await fetch(requestUrl, {
+      const response = await fetch(url, {
         method,
         headers: Object.fromEntries(
           headers.map(({ key, value }) => [key, value])
@@ -71,7 +59,7 @@ const Rest = () => {
 
       setResponseStatus(`${response.status} ${response.statusText}`)
       const responseData = await response.text()
-      setResponseBody(responseData)
+      setResponseBody(responseData) // Оставляем в формате текста
     } catch (error) {
       setResponseStatus("Error")
       setResponseBody(JSON.stringify(error))

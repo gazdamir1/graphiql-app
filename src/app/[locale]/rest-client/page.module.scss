@@ -10,8 +10,7 @@
     text-align: center;
   }
 
-  .requestSection,
-  .responseSection {
+  .requestSection {
     border: 1px solid var(--text-color);
     padding: 20px;
     margin-bottom: 20px;
@@ -84,37 +83,6 @@
       font-size: 14px;
       border: 1px solid #ccc;
       border-radius: 4px;
-    }
-  }
-
-  .responseSection {
-    input {
-      width: 100%;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      background-color: #f1f1f1;
-    }
-
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .status {
-      margin-bottom: 20px;
     }
   }
 }

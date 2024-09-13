@@ -1,24 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import styles from "./page.module.scss"
-import { useTranslations } from "next-intl"
+import { useState } from "react";
+import styles from "./page.module.scss";
+import { useTranslations } from "next-intl";
+import ResponseSection from "@/components/ResponseSection/ResponseSection";
 
 const Rest = () => {
-  const t = useTranslations()
+  const t = useTranslations();
 
   // Состояния
-  const [method, setMethod] = useState("GET")
-  const [url, setUrl] = useState("")
-  const [headers, setHeaders] = useState([{ key: "", value: "" }])
-  const [body, setBody] = useState("")
-  const [responseStatus, setResponseStatus] = useState("")
-  const [responseBody, setResponseBody] = useState("")
+  const [method, setMethod] = useState("GET");
+  const [url, setUrl] = useState("");
+  const [headers, setHeaders] = useState([{ key: "", value: "" }]);
+  const [body, setBody] = useState("");
+  const [responseStatus, setResponseStatus] = useState("");
+  const [responseBody, setResponseBody] = useState("");
 
   // Функции для работы с заголовками
   const addHeader = () => {
-    setHeaders([...headers, { key: "", value: "" }])
-  }
+    setHeaders([...headers, { key: "", value: "" }]);
+  };
 
   const updateHeader = (
     index: number,
@@ -27,27 +28,26 @@ const Rest = () => {
   ) => {
     const newHeaders = headers.map((header, i) =>
       i === index ? { ...header, [keyOrValue]: value } : header
-    )
-    setHeaders(newHeaders)
-  }
+    );
+    setHeaders(newHeaders);
+  };
 
   const removeHeader = (index: number) => {
-    setHeaders(headers.filter((_, i) => i !== index))
-  }
+    setHeaders(headers.filter((_, i) => i !== index));
+  };
 
   // Кодирование в base64
   const encodeBase64 = (str: string) => {
-    return btoa(str)
-  }
+    return btoa(str);
+  };
 
   // Декодирование из base64
   const decodeBase64 = (str: string) => {
-    return atob(str)
-  }
+    return atob(str);
+  };
 
   // Отправка запроса
   const sendRequest = async () => {
-    // Запрос напрямую на указанный URL
     try {
       const response = await fetch(url, {
         method,
@@ -55,16 +55,30 @@ const Rest = () => {
           headers.map(({ key, value }) => [key, value])
         ),
         body: body ? JSON.stringify(JSON.parse(body)) : undefined,
-      })
+      });
 
-      setResponseStatus(`${response.status} ${response.statusText}`)
-      const responseData = await response.text()
-      setResponseBody(responseData) // Оставляем в формате текста
+      setResponseStatus(`${response.status} ${response.statusText}`);
+
+      const contentType = response.headers.get("Content-Type");
+      let responseData = await response.text();
+
+      // Проверяем, является ли ответ JSON
+      if (contentType && contentType.includes("application/json")) {
+        try {
+          // Парсим JSON и форматируем его
+          const json = JSON.parse(responseData);
+          responseData = JSON.stringify(json, null, 2);
+        } catch (e) {
+          console.error("Ошибка при парсинге JSON", e);
+        }
+      }
+
+      setResponseBody(responseData);
     } catch (error) {
-      setResponseStatus("Error")
-      setResponseBody(JSON.stringify(error))
+      setResponseStatus("Error");
+      setResponseBody(JSON.stringify(error));
     }
-  }
+  };
 
   return (
     <div className={styles.restClientContainer}>
@@ -123,24 +137,12 @@ const Rest = () => {
         <button onClick={sendRequest}>{t("send-request")}</button>
       </div>
 
-      <div className={styles.responseSection}>
-        <label>{t("status")}:</label>
-        <input
-          className={styles.status}
-          type="text"
-          value={responseStatus}
-          placeholder={t("http-status-code")}
-          readOnly
-        />
-        <label>{t("body")}:</label>
-        <textarea
-          value={responseBody}
-          placeholder={t("read-only-json-viewer")}
-          readOnly
-        ></textarea>
-      </div>
+      <ResponseSection
+        responseStatus={responseStatus}
+        responseBody={responseBody}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default Rest
+export default Rest;

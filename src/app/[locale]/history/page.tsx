@@ -1,40 +1,96 @@
-"use client";
+"use client"
 
-import { useTranslations } from "next-intl";
-import styles from "./page.module.scss";
+import { useState, useEffect } from "react"
+import styles from "./page.module.scss"
+
+interface RequestHistoryItem {
+  id: string
+  method: string
+  url: string
+  headers: Record<string, string>
+  body?: string
+  timestamp: number
+  isGraphQL: boolean
+}
 
 const History = () => {
-  const t = useTranslations();
+  const [history, setHistory] = useState<RequestHistoryItem[]>([])
+  const [filter, setFilter] = useState<"ALL" | "REST" | "GRAPHQL">("ALL")
 
-  if (false) {
-    return (
-      <div className={styles.historyPanelContainer}>
-        <>
-          <div className={styles.historyHeader}>
-            <h2>History Requests</h2>
-          </div>
-          <div className={styles.historyList}>
-            <div className={styles.historyItem}></div>
-          </div>
-        </>
-      </div>
-    );
-  } else {
-    return (
-      <div className={styles.emptyState}>
-        <p>{t("empty-history-message")}</p>
-        <p>{t("empty-history-message2")}:</p>
-        <div className={styles.buttonGroup}>
-          <button type="button" className={styles.restButton}>
-            REST {t("client")}
-          </button>
-          <button type="button" className={styles.graphiqlButton}>
-            GraphiQL {t("client")}
-          </button>
-        </div>
-      </div>
-    );
+  useEffect(() => {
+    const storedHistory = JSON.parse(
+      localStorage.getItem("requestHistory") || "[]"
+    )
+    const sortedHistory = storedHistory.sort(
+      (a: RequestHistoryItem, b: RequestHistoryItem) =>
+        b.timestamp - a.timestamp
+    )
+    setHistory(sortedHistory)
+  }, [])
+
+  const deleteRequestFromHistory = (id: string) => {
+    const updatedHistory = history.filter((item) => item.id !== id)
+    setHistory(updatedHistory)
+    localStorage.setItem("requestHistory", JSON.stringify(updatedHistory))
   }
-};
 
-export default History;
+  const clearHistory = () => {
+    setHistory([])
+    localStorage.removeItem("requestHistory")
+  }
+
+  const filteredHistory = history.filter((item) => {
+    if (filter === "ALL") return true
+    if (filter === "REST") return !item.isGraphQL
+    if (filter === "GRAPHQL") return item.isGraphQL
+  })
+
+  return (
+    <div className={styles.historyPanelContainer}>
+      <div className={styles.historyHeader}>
+        <button
+          className={`${styles.restButton}`}
+          onClick={() => setFilter("ALL")}
+        >
+          Все
+        </button>
+        <button
+          className={`${styles.restButton}`}
+          onClick={() => setFilter("REST")}
+        >
+          REST
+        </button>
+        <button
+          className={`${styles.graphiqlButton}`}
+          onClick={() => setFilter("GRAPHQL")}
+        >
+          GraphQL
+        </button>
+      </div>
+      <button onClick={clearHistory}>Очистить всю историю</button>
+      {filteredHistory.length === 0 ? (
+        <div className={styles.emptyState}>
+          <p>Здесь пока ничего нет. Выполните запрос для начала.</p>
+        </div>
+      ) : (
+        <ul className={styles.historyList}>
+          {filteredHistory.map((item) => (
+            <li key={item.id} className={styles.historyItem}>
+              <a
+                href={`/${item.isGraphQL ? "GRAPHQL" : item.method}/${btoa(item.url)}/${item.body ? btoa(item.body) : ""}`}
+              >
+                {item.method} {item.url}
+              </a>
+              <span>{new Date(item.timestamp).toLocaleString()}</span>
+              <button onClick={() => deleteRequestFromHistory(item.id)}>
+                Удалить
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default History

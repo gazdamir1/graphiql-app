@@ -5,9 +5,18 @@ import styles from "./page.module.scss";
 import { useTranslations } from "next-intl";
 import ResponseSection from "@/components/ResponseSection/ResponseSection";
 
+interface RequestHistoryItem {
+  id: string;
+  method: string;
+  url: string;
+  headers: Record<string, string>;
+  body?: string;
+  timestamp: number;
+  isGraphQL: boolean;
+}
+
 const GraphiQL = () => {
   const t = useTranslations();
-
   const [url, setUrl] = useState("");
   const [sdlUrl, setSdlUrl] = useState("");
   const [headers, setHeaders] = useState([{ key: "", value: "" }]);
@@ -22,6 +31,30 @@ const GraphiQL = () => {
       setSdlUrl(`${url}?sdl`);
     }
   }, [url]);
+
+  const generateUniqueId = () => {
+    return "_" + Math.random().toString(36).substr(2, 9);
+  };
+
+  const saveRequestToHistory = () => {
+    const request: RequestHistoryItem = {
+      id: generateUniqueId(),
+      method: "POST",
+      url,
+      headers: Object.fromEntries(
+        headers.map(({ key, value }) => [key, value])
+      ),
+      body: JSON.stringify({
+        query,
+        variables: variables ? JSON.parse(variables) : {},
+      }),
+      timestamp: Date.now(),
+      isGraphQL: true,
+    };
+    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]");
+    history.push(request);
+    localStorage.setItem("requestHistory", JSON.stringify(history));
+  };
 
   const sendRequest = async () => {
     try {
@@ -52,6 +85,8 @@ const GraphiQL = () => {
       } else {
         setDocumentation("");
       }
+
+      saveRequestToHistory();
     } catch (error) {
       setResponseStatus("Error");
       setResponseBody(JSON.stringify(error));

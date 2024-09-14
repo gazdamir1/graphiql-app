@@ -1,19 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 import { useTranslations } from "next-intl";
 import ResponseSection from "@/components/ResponseSection/ResponseSection";
-
-interface RequestHistoryItem {
-  id: string;
-  method: string;
-  url: string;
-  headers: Record<string, string>;
-  body?: string;
-  timestamp: number;
-  isGraphQL: boolean;
-}
+import { SendHttpRequest } from "@/utils/sendHttpRequest";
+import HttpHeaders from "@/components/HttpHeaders/HttpHeaders";
 
 const Rest = () => {
   const t = useTranslations();
@@ -21,87 +13,45 @@ const Rest = () => {
   const [url, setUrl] = useState("");
   const [headers, setHeaders] = useState([{ key: "", value: "" }]);
   const [body, setBody] = useState("");
+  const [variables, setVariables] = useState("");
   const [responseStatus, setResponseStatus] = useState("");
   const [responseBody, setResponseBody] = useState("");
 
-  const addHeader = () => {
-    setHeaders([...headers, { key: "", value: "" }]);
-  };
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const methodParam = params.get("method");
+    const urlParam = params.get("url");
+    const bodyParam = params.get("body");
+    const variablesParam = params.get("variables");
+    const headersParam = params.get("headers");
 
-  const updateHeader = (
-    index: number,
-    keyOrValue: "key" | "value",
-    value: string
-  ) => {
-    const newHeaders = headers.map((header, i) =>
-      i === index ? { ...header, [keyOrValue]: value } : header
-    );
-    setHeaders(newHeaders);
-  };
-
-  const removeHeader = (index: number) => {
-    setHeaders(headers.filter((_, i) => i !== index));
-  };
-
-  const generateUniqueId = () => {
-    return "_" + Math.random().toString(36).substr(2, 9);
-  };
-
-  const encodeBase64 = (str: string) => {
-    return btoa(str);
-  };
-
-  const decodeBase64 = (str: string) => {
-    return atob(str);
-  };
-
-  const saveRequestToHistory = () => {
-    const request: RequestHistoryItem = {
-      id: generateUniqueId(),
-      method,
-      url,
-      headers: Object.fromEntries(
-        headers.map(({ key, value }) => [key, value])
-      ),
-      body,
-      timestamp: Date.now(),
-      isGraphQL: false,
-    };
-    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]");
-    history.push(request);
-    localStorage.setItem("requestHistory", JSON.stringify(history));
-  };
-
-  const sendRequest = async () => {
-    try {
-      const response = await fetch(url, {
-        method,
-        headers: Object.fromEntries(
-          headers.map(({ key, value }) => [key, value])
-        ),
-        body: body ? JSON.stringify(JSON.parse(body)) : undefined,
-      });
-
-      setResponseStatus(`${response.status} ${response.statusText}`);
-
-      const contentType = response.headers.get("Content-Type");
-      let responseData = await response.text();
-
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          const json = JSON.parse(responseData);
-          responseData = JSON.stringify(json, null, 2);
-        } catch (e) {
-          console.error("Ошибка при парсинге JSON", e);
-        }
+    if (methodParam) setMethod(methodParam);
+    if (urlParam) setUrl(atob(urlParam));
+    if (bodyParam) setBody(atob(bodyParam));
+    if (variablesParam) setVariables(atob(variablesParam));
+    if (headersParam) {
+      try {
+        const decodedHeaders = JSON.parse(atob(headersParam));
+        const formattedHeaders = Object.entries(decodedHeaders).map(
+          ([key, value]) => ({ key, value: String(value) })
+        );
+        setHeaders(formattedHeaders);
+      } catch (error) {
+        console.error("Error parsing headers:", error);
       }
-
-      setResponseBody(responseData);
-      saveRequestToHistory();
-    } catch (error) {
-      setResponseStatus("Error");
-      setResponseBody(JSON.stringify(error));
     }
+  }, []);
+
+  const sendRequest = () => {
+    SendHttpRequest({
+      url,
+      method,
+      body,
+      headers,
+      variables,
+      setResponseStatus,
+      setResponseBody,
+    });
   };
 
   return (
@@ -123,31 +73,7 @@ const Rest = () => {
           />
         </div>
 
-        <div className={styles.headersSection}>
-          <label>{t("headers")}:</label>
-          <button type="button" onClick={addHeader}>
-            {t("add-header")}
-          </button>
-          {headers.map((header, index) => (
-            <div key={index} className={styles.headerRow}>
-              <input
-                type="text"
-                placeholder={t("header-key")}
-                value={header.key}
-                onChange={(e) => updateHeader(index, "key", e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder={t("header-value")}
-                value={header.value}
-                onChange={(e) => updateHeader(index, "value", e.target.value)}
-              />
-              <button type="button" onClick={() => removeHeader(index)}>
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
+        <HttpHeaders headers={headers} setHeaders={setHeaders} />
 
         <div className={styles.bodySection}>
           <label>{t("body")}:</label>
@@ -157,7 +83,14 @@ const Rest = () => {
             onChange={(e) => setBody(e.target.value)}
           ></textarea>
         </div>
-
+        <div className={styles.bodySection}>
+          <label>{t("variables")}:</label>
+          <textarea
+            placeholder={t("variables-editor")}
+            value={variables}
+            onChange={(e) => setVariables(e.target.value)}
+          ></textarea>
+        </div>
         <button onClick={sendRequest}>{t("send-request")}</button>
       </div>
 

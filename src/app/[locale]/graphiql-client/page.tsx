@@ -4,16 +4,8 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 import { useTranslations } from "next-intl";
 import ResponseSection from "@/components/ResponseSection/ResponseSection";
-
-interface RequestHistoryItem {
-  id: string;
-  method: string;
-  url: string;
-  headers: Record<string, string>;
-  body?: string;
-  timestamp: number;
-  isGraphQL: boolean;
-}
+import { SendHttpRequest } from "@/utils/sendHttpRequest";
+import HttpHeaders from "@/components/HttpHeaders/HttpHeaders";
 
 const GraphiQL = () => {
   const t = useTranslations();
@@ -26,72 +18,48 @@ const GraphiQL = () => {
   const [responseBody, setResponseBody] = useState("");
   const [documentation, setDocumentation] = useState("");
 
+  const sendRequest = () => {
+    SendHttpRequest({
+      url,
+      method: "POST",
+      query,
+      headers,
+      variables,
+      sdlUrl,
+      setResponseStatus,
+      setResponseBody,
+      setDocumentation,
+    });
+  };
+
   useEffect(() => {
     if (url) {
       setSdlUrl(`${url}?sdl`);
     }
   }, [url]);
 
-  const generateUniqueId = () => {
-    return "_" + Math.random().toString(36).substr(2, 9);
-  };
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const encodedUrl = searchParams.get("url");
+    const encodedQuery = searchParams.get("query");
+    const encodedVariables = searchParams.get("variables");
+    const headersParam = searchParams.get("headers");
 
-  const saveRequestToHistory = () => {
-    const request: RequestHistoryItem = {
-      id: generateUniqueId(),
-      method: "POST",
-      url,
-      headers: Object.fromEntries(
-        headers.map(({ key, value }) => [key, value])
-      ),
-      body: JSON.stringify({
-        query,
-        variables: variables ? JSON.parse(variables) : {},
-      }),
-      timestamp: Date.now(),
-      isGraphQL: true,
-    };
-    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]");
-    history.push(request);
-    localStorage.setItem("requestHistory", JSON.stringify(history));
-  };
-
-  const sendRequest = async () => {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: Object.fromEntries(
-          headers.map(({ key, value }) => [key, value])
-        ),
-        body: JSON.stringify({
-          query,
-          variables: variables ? JSON.parse(variables) : {},
-        }),
-      });
-
-      setResponseStatus(`${response.status} ${response.statusText}`);
-      const responseData = await response.text();
-
-      if (response.headers.get("Content-Type")?.includes("application/json")) {
-        setResponseBody(JSON.stringify(JSON.parse(responseData), null, 2));
-      } else {
-        setResponseBody(responseData);
+    if (encodedUrl) setUrl(atob(encodedUrl));
+    if (encodedQuery) setQuery(atob(encodedQuery));
+    if (encodedVariables) setVariables(atob(encodedVariables));
+    if (headersParam) {
+      try {
+        const decodedHeaders = JSON.parse(atob(headersParam));
+        const formattedHeaders = Object.entries(decodedHeaders).map(
+          ([key, value]) => ({ key, value: String(value) })
+        );
+        setHeaders(formattedHeaders);
+      } catch (error) {
+        console.error("Error parsing headers:", error);
       }
-
-      if (response.ok) {
-        const sdlResponse = await fetch(sdlUrl);
-        const sdlData = await sdlResponse.text();
-        setDocumentation(sdlData);
-      } else {
-        setDocumentation("");
-      }
-
-      saveRequestToHistory();
-    } catch (error) {
-      setResponseStatus("Error");
-      setResponseBody(JSON.stringify(error));
     }
-  };
+  }, []);
 
   return (
     <div className={styles.graphiqlClientContainer}>
@@ -115,50 +83,12 @@ const GraphiQL = () => {
             onChange={(e) => setSdlUrl(e.target.value)}
           />
         </div>
-        <div className={styles.headersSection}>
-          <label>{t("headers")}:</label>
-          <button
-            type="button"
-            onClick={() => setHeaders([...headers, { key: "", value: "" }])}
-          >
-            {t("add-header")}
-          </button>
-          {headers.map((header, index) => (
-            <div key={index} className={styles.headerRow}>
-              <input
-                type="text"
-                placeholder={t("header-key")}
-                value={header.key}
-                onChange={(e) => {
-                  const newHeaders = [...headers];
-                  newHeaders[index].key = e.target.value;
-                  setHeaders(newHeaders);
-                }}
-              />
-              <input
-                type="text"
-                placeholder={t("header-value")}
-                value={header.value}
-                onChange={(e) => {
-                  const newHeaders = [...headers];
-                  newHeaders[index].value = e.target.value;
-                  setHeaders(newHeaders);
-                }}
-              />
-              <button
-                onClick={() =>
-                  setHeaders(headers.filter((_, i) => i !== index))
-                }
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
+
+        <HttpHeaders headers={headers} setHeaders={setHeaders} />
+
         <div className={styles.bodySection}>
           <label>{t("query")}:</label>
           <textarea
-            // TODO: Поменять textarea на крутой редактор, или же сделать стили для textarea
             placeholder={t("graphql-query-editor")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -167,7 +97,6 @@ const GraphiQL = () => {
         <div className={styles.bodySection}>
           <label>{t("variables")}:</label>
           <textarea
-            // TODO: поменять textarea на крутой редактор, или же сделать стили для textarea
             placeholder={t("variables-editor")}
             value={variables}
             onChange={(e) => setVariables(e.target.value)}

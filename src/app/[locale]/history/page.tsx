@@ -1,49 +1,66 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import styles from "./page.module.scss"
+import { useState, useEffect } from "react";
+import styles from "./page.module.scss";
 
 interface RequestHistoryItem {
-  id: string
-  method: string
-  url: string
-  headers: Record<string, string>
-  body?: string
-  timestamp: number
-  isGraphQL: boolean
+  id: string;
+  method: string;
+  url: string;
+  headers: Record<string, string>;
+  body?: string;
+  query?: string;
+  variables?: string;
+  timestamp: number;
+  isGraphQL: boolean;
 }
 
 const History = () => {
-  const [history, setHistory] = useState<RequestHistoryItem[]>([])
-  const [filter, setFilter] = useState<"ALL" | "REST" | "GRAPHQL">("ALL")
+  const [history, setHistory] = useState<RequestHistoryItem[]>([]);
+  const [filter, setFilter] = useState<"ALL" | "REST" | "GRAPHQL">("ALL");
 
   useEffect(() => {
     const storedHistory = JSON.parse(
       localStorage.getItem("requestHistory") || "[]"
-    )
+    );
     const sortedHistory = storedHistory.sort(
       (a: RequestHistoryItem, b: RequestHistoryItem) =>
         b.timestamp - a.timestamp
-    )
-    setHistory(sortedHistory)
-  }, [])
+    );
+    setHistory(sortedHistory);
+  }, []);
 
   const deleteRequestFromHistory = (id: string) => {
-    const updatedHistory = history.filter((item) => item.id !== id)
-    setHistory(updatedHistory)
-    localStorage.setItem("requestHistory", JSON.stringify(updatedHistory))
-  }
+    const updatedHistory = history.filter((item) => item.id !== id);
+    setHistory(updatedHistory);
+    localStorage.setItem("requestHistory", JSON.stringify(updatedHistory));
+  };
 
   const clearHistory = () => {
-    setHistory([])
-    localStorage.removeItem("requestHistory")
-  }
+    setHistory([]);
+    localStorage.removeItem("requestHistory");
+  };
 
   const filteredHistory = history.filter((item) => {
-    if (filter === "ALL") return true
-    if (filter === "REST") return !item.isGraphQL
-    if (filter === "GRAPHQL") return item.isGraphQL
-  })
+    if (filter === "ALL") return true;
+    if (filter === "REST") return !item.isGraphQL;
+    if (filter === "GRAPHQL") return item.isGraphQL;
+  });
+
+  const handleHistoryClick = (item: RequestHistoryItem) => {
+    const encodedUrl = btoa(item.url);
+    const encodedBody = item.body ? btoa(item.body) : "";
+    const encodedVariables = item.variables ? btoa(item.variables) : "";
+    const encodedHeaders = btoa(JSON.stringify(item.headers));
+
+    if (item.isGraphQL) {
+      const newUrl = `/en/graphiql-client?url=${encodedUrl}&query=${encodedBody}&variables=${encodedVariables}&headers=${encodedHeaders}`;
+      window.location.href = newUrl;
+    } else {
+      const newUrl = `/en/rest-client?method=${item.method}&url=${encodedUrl}&body=${encodedBody}&variables=${encodedVariables}&headers=${encodedHeaders}`;
+      window.location.href = newUrl;
+    }
+  };
 
   return (
     <div className={styles.historyPanelContainer}>
@@ -76,11 +93,12 @@ const History = () => {
         <ul className={styles.historyList}>
           {filteredHistory.map((item) => (
             <li key={item.id} className={styles.historyItem}>
-              <a
-                href={`/${item.isGraphQL ? "GRAPHQL" : item.method}/${btoa(item.url)}/${item.body ? btoa(item.body) : ""}`}
+              <span
+                onClick={() => handleHistoryClick(item)}
+                className={styles.historyItemLink}
               >
                 {item.method} {item.url}
-              </a>
+              </span>
               <span>{new Date(item.timestamp).toLocaleString()}</span>
               <button onClick={() => deleteRequestFromHistory(item.id)}>
                 Удалить
@@ -90,7 +108,7 @@ const History = () => {
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default History
+export default History;

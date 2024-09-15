@@ -2,21 +2,21 @@
 
 import { useState, useEffect } from "react";
 import styles from "./page.module.scss";
+import { useTranslations } from "next-intl";
 
 interface RequestHistoryItem {
   id: string;
   method: string;
   url: string;
   headers: Record<string, string>;
-  body?: {
-    query?: string;
-    variables?: string;
-  };
+  query?: string;
+  variables?: string;
   timestamp: number;
   isGraphQL: boolean;
 }
 
 const History = () => {
+  const t = useTranslations();
   const [history, setHistory] = useState<RequestHistoryItem[]>([]);
   const [filter, setFilter] = useState<"ALL" | "REST" | "GRAPHQL">("ALL");
 
@@ -50,10 +50,8 @@ const History = () => {
 
   const handleHistoryClick = (item: RequestHistoryItem) => {
     const encodedUrl = btoa(item.url);
-    const encodedQuery = item.body?.query ? btoa(item.body.query) : "";
-    const encodedVariables = item.body?.variables
-      ? btoa(item.body.variables)
-      : "";
+    const encodedQuery = item.query ? btoa(item.query) : "";
+    const encodedVariables = item.variables ? btoa(item.variables) : "";
     const encodedHeaders = btoa(JSON.stringify(item.headers));
 
     if (item.isGraphQL) {
@@ -72,7 +70,7 @@ const History = () => {
           className={`${styles.restButton}`}
           onClick={() => setFilter("ALL")}
         >
-          Все
+          {t("all")}
         </button>
         <button
           className={`${styles.restButton}`}
@@ -87,10 +85,11 @@ const History = () => {
           GraphQL
         </button>
       </div>
-      <button onClick={clearHistory}>Очистить всю историю</button>
+      <button onClick={clearHistory}>{t("clear-history")}</button>
       {filteredHistory.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>Здесь пока ничего нет. Выполните запрос для начала.</p>
+          <p>{t("empty-history-message")}</p>
+          <p>{t("empty-history-message2")}</p>
         </div>
       ) : (
         <ul className={styles.historyList}>
@@ -104,7 +103,7 @@ const History = () => {
               </span>
               <span>{new Date(item.timestamp).toLocaleString()}</span>
               <button onClick={() => deleteRequestFromHistory(item.id)}>
-                Удалить
+                {t("delete-request")}
               </button>
             </li>
           ))}

@@ -30,8 +30,12 @@
   "variables-editor": "Редактор переменных",
   "documentation": "Документация",
   "visible-if-sdl-response-success": "Отображается, если ответ SDL выполнен успешно",
+
+  "all": "Все",
+  "clear-history": "Очистить всю историю",
   "empty-history-message": "Вы не выполнили ни одного запроса",
   "empty-history-message2": "Здесь пусто. Попробуйте",
+  "delete-request": "Удалить",
 
   "error-user-not-found": "Пользователь не найден",
   "error-wrong-password": "Неверный пароль",

@@ -3,7 +3,6 @@ import { saveRequestToHistory } from "./saveRequestToHistory";
 export const SendHttpRequest = async ({
   url,
   method = "POST",
-  body = "",
   query = "",
   headers = [],
   variables = "",
@@ -14,7 +13,6 @@ export const SendHttpRequest = async ({
 }: {
   url: string;
   method?: string;
-  body?: string;
   query?: string;
   headers: { key: string; value: string }[];
   variables?: string;
@@ -58,9 +56,8 @@ export const SendHttpRequest = async ({
 
     if (method !== "GET" && method !== "HEAD") {
       fetchOptions.body = JSON.stringify({
-        body: body ? body : undefined,
         query: method === "POST" ? query : undefined,
-        variables: variables ? JSON.parse(variables) : {},
+        variables: variables ? JSON.parse(variables) : null,
       });
     }
 

@@ -3,7 +3,8 @@ interface RequestHistoryItem {
   method: string;
   url: string;
   headers: Record<string, string>;
-  body?: string;
+  query?: string;
+  variables?: string;
   timestamp: number;
   isGraphQL: boolean;
 }
@@ -25,10 +26,8 @@ export const saveRequestToHistory = (
     method,
     url,
     headers: Object.fromEntries(headers.map(({ key, value }) => [key, value])),
-    body: JSON.stringify({
-      query,
-      variables: variables ? JSON.parse(variables) : {},
-    }),
+    query,
+    variables: variables ? JSON.parse(variables) : null,
     timestamp: Date.now(),
     isGraphQL,
   };

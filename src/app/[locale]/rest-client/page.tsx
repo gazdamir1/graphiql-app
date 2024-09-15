@@ -12,7 +12,7 @@ const Rest = () => {
   const [method, setMethod] = useState("GET");
   const [url, setUrl] = useState("");
   const [headers, setHeaders] = useState([{ key: "", value: "" }]);
-  const [body, setBody] = useState("");
+  const [query, setQuery] = useState("");
   const [variables, setVariables] = useState("");
   const [responseStatus, setResponseStatus] = useState("");
   const [responseBody, setResponseBody] = useState("");
@@ -21,13 +21,13 @@ const Rest = () => {
     const params = new URLSearchParams(window.location.search);
     const methodParam = params.get("method");
     const urlParam = params.get("url");
-    const bodyParam = params.get("body");
+    const bodyParam = params.get("query");
     const variablesParam = params.get("variables");
     const headersParam = params.get("headers");
 
     if (methodParam) setMethod(methodParam);
     if (urlParam) setUrl(atob(urlParam));
-    if (bodyParam) setBody(atob(bodyParam));
+    if (bodyParam) setQuery(atob(bodyParam));
     if (variablesParam) setVariables(atob(variablesParam));
     if (headersParam) {
       try {
@@ -46,7 +46,7 @@ const Rest = () => {
     SendHttpRequest({
       url,
       method,
-      body,
+      query,
       headers,
       variables,
       setResponseStatus,
@@ -79,8 +79,8 @@ const Rest = () => {
           <label>{t("body")}:</label>
           <textarea
             placeholder={t("json/text-editor")}
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           ></textarea>
         </div>
         <div className={styles.bodySection}>

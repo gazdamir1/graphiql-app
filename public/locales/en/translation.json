@@ -31,8 +31,11 @@
   "documentation": "Documentation",
   "visible-if-sdl-response-success": "Visible if SDL Response Success",
 
+  "all": "All",
+  "clear-history": "Clear all history",
   "empty-history-message": "You haven't executed any requests",
   "empty-history-message2": "It's empty here. Try",
+  "delete-request": "Delete",
 
   "error-user-not-found": "User is not found",
   "error-wrong-password": "Wrong Password",

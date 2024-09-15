@@ -1,13 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { auth } from "../../../authorization/firebase";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  User,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import styles from "./page.module.scss";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

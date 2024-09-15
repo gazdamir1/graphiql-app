@@ -10,7 +10,7 @@ describe("Footer component", () => {
   const hasAttribute = (
     element: HTMLElement,
     attribute: string,
-    value: string
+    value: string,
   ) => {
     return element.getAttribute(attribute) === value;
   };
@@ -24,8 +24,8 @@ describe("Footer component", () => {
       hasAttribute(
         githubLink,
         "href",
-        "https://github.com/gazdamir1/graphiql-app/tree/develop"
-      )
+        "https://github.com/gazdamir1/graphiql-app/tree/develop",
+      ),
     ).toBe(true);
   });
 
@@ -42,7 +42,7 @@ describe("Footer component", () => {
 
     expect(elementInDocument(image as HTMLElement)).toBe(true);
     expect(hasAttribute(image as HTMLElement, "src", "/rss-logo.svg")).toBe(
-      true
+      true,
     );
     expect(hasAttribute(image as HTMLElement, "width", "40")).toBe(true);
     expect(hasAttribute(image as HTMLElement, "height", "40")).toBe(true);

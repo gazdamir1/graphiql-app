@@ -40,7 +40,7 @@ const Header = () => {
     try {
       await signOut(auth);
       document.cookie = "authToken=; Max-Age=0; path=/";
-      console.log("User logged out");
+      localStorage.removeItem("requestHistory");
     } catch (error) {
       console.error("Error logging out:", error);
     }

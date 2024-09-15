@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import { auth } from "../../authorization/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import About from "@/components/About/About";
 
 export default function Home() {
   const t = useTranslations();
@@ -35,6 +36,7 @@ export default function Home() {
             <Link href="/graphiql-client">GraphiQL {t("client")}</Link>|
             <Link href="/history">{t("history")}</Link>
           </div>
+          <About />
         </>
       ) : (
         <div className={styles.homeContent}>
@@ -43,6 +45,7 @@ export default function Home() {
             <Link href="/sign-in">{t("sign-in")}</Link>|
             <Link href="/sign-up">{t("sign-up")}</Link>
           </div>
+          <About />
         </div>
       )}
     </div>

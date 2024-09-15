@@ -1,13 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { auth } from "../../../authorization/firebase";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
-  User,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import styles from "./page.module.scss";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
@@ -58,13 +53,7 @@ const SignUp = () => {
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      console.log("User signed up:", user);
+      await createUserWithEmailAndPassword(auth, email, password);
       setSuccess(true);
       setError(null);
       document.cookie = "authToken=fakeToken123; path=/";

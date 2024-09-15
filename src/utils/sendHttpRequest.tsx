@@ -63,8 +63,6 @@ export const SendHttpRequest = async ({
 
     const response = await fetch(url, fetchOptions);
 
-    console.log(response);
-
     setResponseStatus(`${response.status} ${response.statusText}`);
     const responseData = await response.text();
 
@@ -91,7 +89,6 @@ export const SendHttpRequest = async ({
       method === "POST"
     );
   } catch (error) {
-    console.log(error);
     setResponseStatus("Error");
     setResponseBody(JSON.stringify(error));
   }

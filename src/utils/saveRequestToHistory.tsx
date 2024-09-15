@@ -19,7 +19,7 @@ export const saveRequestToHistory = (
   headers: { key: string; value: string }[],
   query: string,
   variables: string,
-  isGraphQL: boolean
+  isGraphQL: boolean,
 ) => {
   const request: RequestHistoryItem = {
     id: generateUniqueId(),

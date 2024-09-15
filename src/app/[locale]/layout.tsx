@@ -9,6 +9,7 @@ import {
 } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
+import ErrorBoundary from "@/ErrorBoundary";
 
 type Props = {
   children: React.ReactNode;
@@ -41,13 +42,15 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={inter.className}>
-        <NextIntlClientProvider messages={messages}>
-          <div className="rootWrapper">
-            <Header />
-            <main className="mainWrapper">{children}</main>
-            <Footer />
-          </div>
-        </NextIntlClientProvider>
+        <ErrorBoundary>
+          <NextIntlClientProvider messages={messages}>
+            <div className="rootWrapper">
+              <Header />
+              <main className="mainWrapper">{children}</main>
+              <Footer />
+            </div>
+          </NextIntlClientProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

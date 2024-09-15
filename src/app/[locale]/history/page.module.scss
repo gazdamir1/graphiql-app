@@ -22,7 +22,9 @@
   }
 
   .historyHeader {
-    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
     text-align: center;
   }
 
@@ -31,7 +33,6 @@
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 8px;
-    // background-color: #f9f9f9;
   }
 
   .historyItem {

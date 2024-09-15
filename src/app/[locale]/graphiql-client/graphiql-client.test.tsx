@@ -1,85 +1,56 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
-import { render, screen, fireEvent, waitFor } from "@testing-library/react"
-import GraphiQL from "./page"
-import { useTranslations } from "next-intl"
-import { SendHttpRequest } from "@/utils/sendHttpRequest"
-import HttpHeaders from "@/components/HttpHeaders/HttpHeaders"
-import ResponseSection from "@/components/ResponseSection/ResponseSection"
-import "@testing-library/jest-dom" // Импортируйте это
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import GraphiQL from "./page";
+import { SendHttpRequest } from "@/utils/sendHttpRequest";
+import "@testing-library/jest-dom"; // Импортируйте это
 
-// Моки для useTranslations
 vi.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
-}))
+}));
 
-// Моки для SendHttpRequest
 vi.mock("@/utils/sendHttpRequest", () => ({
   SendHttpRequest: vi.fn(),
-}))
+}));
 
-// Моки для HttpHeaders и ResponseSection
 vi.mock("@/components/HttpHeaders/HttpHeaders", () => ({
   default: vi.fn(),
-}))
+}));
 
 vi.mock("@/components/ResponseSection/ResponseSection", () => ({
   default: vi.fn(),
-}))
+}));
 
 describe("GraphiQL", () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    window.location.search = ""
-  })
+    vi.clearAllMocks();
+    window.location.search = "";
+  });
 
   afterEach(() => {
-    vi.clearAllMocks()
-    window.location.search = ""
-  })
+    vi.clearAllMocks();
+    window.location.search = "";
+  });
 
   it("должен отображать заголовок и кнопку отправки запроса", () => {
-    render(<GraphiQL />)
-    expect(screen.getByText("GraphiQL client")).toBeInTheDocument()
-    expect(screen.getByText("send-request")).toBeInTheDocument()
-  })
-
-  //   it("должен устанавливать состояние из URL параметров", async () => {
-  //     window.location.search = new URLSearchParams({
-  //       url: btoa("https://example.com/graphql"),
-  //       query: btoa('{"query":"query { user { id name } }"}'),
-  //       variables: btoa('{"id":1}'),
-  //       headers: btoa(
-  //         '{"Content-Type":"application/json","Authorization":"Bearer token"}'
-  //       ),
-  //     }).toString()
-
-  //     render(<GraphiQL />)
-
-  //     await waitFor(() => {
-  //       expect(
-  //         screen.getByDisplayValue("https://example.com/graphql")
-  //       ).toBeInTheDocument()
-  //       expect(
-  //         screen.getByDisplayValue('{"query":"query { user { id name } }"}')
-  //       ).toBeInTheDocument()
-  //       expect(screen.getByDisplayValue('{"id":1}')).toBeInTheDocument()
-  //     })
-  //   })
+    render(<GraphiQL />);
+    expect(screen.getByText("GraphiQL client")).toBeInTheDocument();
+    expect(screen.getByText("send-request")).toBeInTheDocument();
+  });
 
   it("должен отправлять запрос при нажатии на кнопку", () => {
-    render(<GraphiQL />)
+    render(<GraphiQL />);
 
     fireEvent.change(screen.getByPlaceholderText("enter-endpoint-URL"), {
       target: { value: "https://example.com/graphql" },
-    })
+    });
     fireEvent.change(screen.getByPlaceholderText("graphql-query-editor"), {
       target: { value: '{"query":"query { user { id name } }"}' },
-    })
+    });
     fireEvent.change(screen.getByPlaceholderText("variables-editor"), {
       target: { value: '{"id":1}' },
-    })
+    });
 
-    fireEvent.click(screen.getByText("send-request"))
+    fireEvent.click(screen.getByText("send-request"));
 
     expect(SendHttpRequest).toHaveBeenCalledWith({
       url: "https://example.com/graphql",
@@ -91,6 +62,6 @@ describe("GraphiQL", () => {
       setResponseStatus: expect.any(Function),
       setResponseBody: expect.any(Function),
       setDocumentation: expect.any(Function),
-    })
-  })
-})
+    });
+  });
+});

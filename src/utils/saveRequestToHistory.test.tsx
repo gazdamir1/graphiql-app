@@ -1,30 +1,30 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest"
-import { saveRequestToHistory } from "./saveRequestToHistory" // Замените на путь к вашему модулю
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { saveRequestToHistory } from "./saveRequestToHistory"; // Замените на путь к вашему модулю
 
 describe("saveRequestToHistory", () => {
   beforeEach(() => {
-    localStorage.clear()
-  })
+    localStorage.clear();
+  });
 
   afterEach(() => {
-    localStorage.clear()
-  })
+    localStorage.clear();
+  });
 
   it("должен сохранить запрос в историю", () => {
-    const method = "POST"
-    const url = "https://example.com/graphql"
+    const method = "POST";
+    const url = "https://example.com/graphql";
     const headers = [
       { key: "Content-Type", value: "application/json" },
       { key: "Authorization", value: "Bearer token" },
-    ]
-    const query = `query { user { id name } }`
-    const variables = JSON.stringify({ id: 1 })
-    const isGraphQL = true
+    ];
+    const query = `query { user { id name } }`;
+    const variables = JSON.stringify({ id: 1 });
+    const isGraphQL = true;
 
-    saveRequestToHistory(method, url, headers, query, variables, isGraphQL)
+    saveRequestToHistory(method, url, headers, query, variables, isGraphQL);
 
-    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]")
-    expect(history.length).toBe(1)
+    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]");
+    expect(history.length).toBe(1);
     expect(history[0]).toMatchObject({
       method,
       url,
@@ -35,26 +35,26 @@ describe("saveRequestToHistory", () => {
       query,
       variables: { id: 1 },
       isGraphQL,
-    })
-  })
+    });
+  });
 
   it("должен сохранить несколько запросов в историю", () => {
-    const method1 = "POST"
-    const url1 = "https://example.com/graphql"
+    const method1 = "POST";
+    const url1 = "https://example.com/graphql";
     const headers1 = [
       { key: "Content-Type", value: "application/json" },
       { key: "Authorization", value: "Bearer token" },
-    ]
-    const query1 = `query { user { id name } }`
-    const variables1 = JSON.stringify({ id: 1 })
-    const isGraphQL1 = true
+    ];
+    const query1 = `query { user { id name } }`;
+    const variables1 = JSON.stringify({ id: 1 });
+    const isGraphQL1 = true;
 
-    const method2 = "GET"
-    const url2 = "https://example.com/api"
-    const headers2 = [{ key: "Content-Type", value: "application/json" }]
-    const query2 = ""
-    const variables2 = ""
-    const isGraphQL2 = false
+    const method2 = "GET";
+    const url2 = "https://example.com/api";
+    const headers2 = [{ key: "Content-Type", value: "application/json" }];
+    const query2 = "";
+    const variables2 = "";
+    const isGraphQL2 = false;
 
     saveRequestToHistory(
       method1,
@@ -62,19 +62,19 @@ describe("saveRequestToHistory", () => {
       headers1,
       query1,
       variables1,
-      isGraphQL1
-    )
+      isGraphQL1,
+    );
     saveRequestToHistory(
       method2,
       url2,
       headers2,
       query2,
       variables2,
-      isGraphQL2
-    )
+      isGraphQL2,
+    );
 
-    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]")
-    expect(history.length).toBe(2)
+    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]");
+    expect(history.length).toBe(2);
     expect(history[0]).toMatchObject({
       method: method1,
       url: url1,
@@ -85,7 +85,7 @@ describe("saveRequestToHistory", () => {
       query: query1,
       variables: { id: 1 },
       isGraphQL: isGraphQL1,
-    })
+    });
     expect(history[1]).toMatchObject({
       method: method2,
       url: url2,
@@ -95,21 +95,21 @@ describe("saveRequestToHistory", () => {
       query: query2,
       variables: null,
       isGraphQL: isGraphQL2,
-    })
-  })
+    });
+  });
 
   it("должен сохранить запрос без переменных", () => {
-    const method = "POST"
-    const url = "https://example.com/graphql"
-    const headers = [{ key: "Content-Type", value: "application/json" }]
-    const query = `query { user { id name } }`
-    const variables = ""
-    const isGraphQL = true
+    const method = "POST";
+    const url = "https://example.com/graphql";
+    const headers = [{ key: "Content-Type", value: "application/json" }];
+    const query = `query { user { id name } }`;
+    const variables = "";
+    const isGraphQL = true;
 
-    saveRequestToHistory(method, url, headers, query, variables, isGraphQL)
+    saveRequestToHistory(method, url, headers, query, variables, isGraphQL);
 
-    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]")
-    expect(history.length).toBe(1)
+    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]");
+    expect(history.length).toBe(1);
     expect(history[0]).toMatchObject({
       method,
       url,
@@ -119,21 +119,21 @@ describe("saveRequestToHistory", () => {
       query,
       variables: null,
       isGraphQL,
-    })
-  })
+    });
+  });
 
   it("должен сохранить запрос без заголовков", () => {
-    const method = "POST"
-    const url = "https://example.com/graphql"
-    const headers: { key: string; value: string }[] = []
-    const query = `query { user { id name } }`
-    const variables = JSON.stringify({ id: 1 })
-    const isGraphQL = true
+    const method = "POST";
+    const url = "https://example.com/graphql";
+    const headers: { key: string; value: string }[] = [];
+    const query = `query { user { id name } }`;
+    const variables = JSON.stringify({ id: 1 });
+    const isGraphQL = true;
 
-    saveRequestToHistory(method, url, headers, query, variables, isGraphQL)
+    saveRequestToHistory(method, url, headers, query, variables, isGraphQL);
 
-    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]")
-    expect(history.length).toBe(1)
+    const history = JSON.parse(localStorage.getItem("requestHistory") || "[]");
+    expect(history.length).toBe(1);
     expect(history[0]).toMatchObject({
       method,
       url,
@@ -141,6 +141,6 @@ describe("saveRequestToHistory", () => {
       query,
       variables: { id: 1 },
       isGraphQL,
-    })
-  })
-})
+    });
+  });
+});

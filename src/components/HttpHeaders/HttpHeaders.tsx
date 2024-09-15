@@ -28,7 +28,7 @@ const HttpHeaders = (props: Props) => {
             value={header.key}
             onChange={(e) => {
               props.setHeaders(
-                updateHeader(props.headers, index, "key", e.target.value)
+                updateHeader(props.headers, index, "key", e.target.value),
               );
             }}
           />
@@ -38,7 +38,7 @@ const HttpHeaders = (props: Props) => {
             value={header.value}
             onChange={(e) => {
               props.setHeaders(
-                updateHeader(props.headers, index, "value", e.target.value)
+                updateHeader(props.headers, index, "value", e.target.value),
               );
             }}
           />

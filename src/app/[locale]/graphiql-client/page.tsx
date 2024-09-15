@@ -55,7 +55,7 @@ const GraphiQL = () => {
       try {
         const decodedHeaders = JSON.parse(atob(headersParam));
         const formattedHeaders = Object.entries(decodedHeaders).map(
-          ([key, value]) => ({ key, value: String(value) })
+          ([key, value]) => ({ key, value: String(value) }),
         );
         setHeaders(formattedHeaders);
       } catch (error) {

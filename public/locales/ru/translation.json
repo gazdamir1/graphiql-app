@@ -4,6 +4,7 @@
   "greeting": "Добро пожаловать",
   "sign-in": "Войти",
   "sign-up": "Зарегистрироваться",
+  "success-sign-up": "Регистрация прошла успешно",
   "second-greeting": "С возвращением",
   "history": "История",
   "email": "Электронная почта",
@@ -48,5 +49,13 @@
   "error-password-number": "1 цифру",
   "error-password-special-char": "1 специальный символ",
 
-  "send-request": "Send request"
+  "send-request": "Send request",
+
+  "about": "GraphiQL - это облегченная версия Postman и GraphiQL, объединенных в одно приложение.",
+  "about2": "Данный проект сделан на курсе React 2024 Q3 от RSSchool.",
+  "team": "Команда The IT Crowd. Разработчики",
+  "damir": "Дамир Газизов 23 года",
+  "job": "Тимлид, фронтенд разработчик",
+  "boris": "Борис Слепцов 22 года",
+  "job2": "Фронтенд разработчик"
 }

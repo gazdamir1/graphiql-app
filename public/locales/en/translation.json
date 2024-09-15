@@ -4,6 +4,7 @@
   "greeting": "Welcome",
   "sign-in": "Sign In",
   "sign-up": "Sign Up",
+  "success-sign-up": "Sign up was success",
   "second-greeting": "Welcome Back",
   "history": "History",
   "email": "Email",
@@ -48,5 +49,13 @@
   "error-password-number": "1 number",
   "error-password-special-char": "1 special char",
 
-  "send-request": "Send request"
+  "send-request": "Send request",
+
+  "about": "GraphiQL is a lightweight version of Postman and GraphiQL combined into one application.",
+  "about2": "This project was made on the React 2024 Q3 course from RSSchool.",
+  "team": "'The IT Crowd' Team. Developers:",
+  "damir": "Damir Gazizov 23 years old",
+  "job": "Team lead, frontend developer",
+  "boris": "Boris Sleptsov 22 years old",
+  "job2": "Frontend developer"
 }

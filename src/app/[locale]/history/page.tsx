@@ -48,17 +48,24 @@ const History = () => {
     if (filter === "GRAPHQL") return item.isGraphQL;
   });
 
+  const handleClick = (url: string) => {
+    window.location.href = url;
+  };
+
   const handleHistoryClick = (item: RequestHistoryItem) => {
+    const pathname = window.location.pathname;
+    const localeMatch = pathname.match(/^\/(en|ru)/);
+    const locale = localeMatch ? localeMatch[1] : null;
     const encodedUrl = btoa(item.url);
     const encodedQuery = item.query ? btoa(item.query) : "";
     const encodedVariables = item.variables ? btoa(item.variables) : "";
     const encodedHeaders = btoa(JSON.stringify(item.headers));
 
     if (item.isGraphQL) {
-      const newUrl = `/en/graphiql-client?url=${encodedUrl}&query=${encodedQuery}&variables=${encodedVariables}&headers=${encodedHeaders}`;
+      const newUrl = `/${locale}/graphiql-client?url=${encodedUrl}&query=${encodedQuery}&variables=${encodedVariables}&headers=${encodedHeaders}`;
       window.location.href = newUrl;
     } else {
-      const newUrl = `/en/rest-client?method=${item.method}&url=${encodedUrl}&body=${encodedQuery}&variables=${encodedVariables}&headers=${encodedHeaders}`;
+      const newUrl = `/${locale}/rest-client?method=${item.method}&url=${encodedUrl}&body=${encodedQuery}&variables=${encodedVariables}&headers=${encodedHeaders}`;
       window.location.href = newUrl;
     }
   };
@@ -90,6 +97,22 @@ const History = () => {
         <div className={styles.emptyState}>
           <p>{t("empty-history-message")}</p>
           <p>{t("empty-history-message2")}</p>
+          <div className={styles.buttonGroup}>
+            <button
+              type="button"
+              className={styles.restButton}
+              onClick={() => handleClick("/rest-client")}
+            >
+              REST {t("client")}
+            </button>
+            <button
+              type="button"
+              className={styles.graphiqlButton}
+              onClick={() => handleClick("/graphiql-client")}
+            >
+              GraphiQL {t("client")}
+            </button>
+          </div>
         </div>
       ) : (
         <ul className={styles.historyList}>

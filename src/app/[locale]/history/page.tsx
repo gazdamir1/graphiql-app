@@ -8,9 +8,10 @@ interface RequestHistoryItem {
   method: string;
   url: string;
   headers: Record<string, string>;
-  body?: string;
-  query?: string;
-  variables?: string;
+  body?: {
+    query?: string;
+    variables?: string;
+  };
   timestamp: number;
   isGraphQL: boolean;
 }
@@ -49,15 +50,17 @@ const History = () => {
 
   const handleHistoryClick = (item: RequestHistoryItem) => {
     const encodedUrl = btoa(item.url);
-    const encodedBody = item.body ? btoa(item.body) : "";
-    const encodedVariables = item.variables ? btoa(item.variables) : "";
+    const encodedQuery = item.body?.query ? btoa(item.body.query) : "";
+    const encodedVariables = item.body?.variables
+      ? btoa(item.body.variables)
+      : "";
     const encodedHeaders = btoa(JSON.stringify(item.headers));
 
     if (item.isGraphQL) {
-      const newUrl = `/en/graphiql-client?url=${encodedUrl}&query=${encodedBody}&variables=${encodedVariables}&headers=${encodedHeaders}`;
+      const newUrl = `/en/graphiql-client?url=${encodedUrl}&query=${encodedQuery}&variables=${encodedVariables}&headers=${encodedHeaders}`;
       window.location.href = newUrl;
     } else {
-      const newUrl = `/en/rest-client?method=${item.method}&url=${encodedUrl}&body=${encodedBody}&variables=${encodedVariables}&headers=${encodedHeaders}`;
+      const newUrl = `/en/rest-client?method=${item.method}&url=${encodedUrl}&body=${encodedQuery}&variables=${encodedVariables}&headers=${encodedHeaders}`;
       window.location.href = newUrl;
     }
   };

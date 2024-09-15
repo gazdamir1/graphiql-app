@@ -27,7 +27,11 @@ export const SendHttpRequest = async ({
 
   try {
     const encodedUrl = encodeBase64(url);
-    const encodedBody = query ? encodeBase64(query) : "";
+    const bodyObject = {
+      query: query || "",
+      variables: variables || {},
+    };
+    const encodedBody = encodeBase64(JSON.stringify(bodyObject));
     const headersQuery = headers
       .map(
         ({ key, value }) =>

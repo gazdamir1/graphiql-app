@@ -13,12 +13,21 @@
   right: 0;
   z-index: 1000;
 
+  .logoWrapper {
+    display: flex;
+    width: 30%;
+  }
+
   .languageToggle {
     display: flex;
+    justify-content: center;
+    width: 30%;
   }
 
   .signNavigation {
     display: flex;
+    justify-content: flex-end;
+    width: 30%;
     gap: 10px;
 
     .signNav {

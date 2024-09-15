@@ -46,7 +46,10 @@ const GraphiQL = () => {
     const headersParam = searchParams.get("headers");
 
     if (encodedUrl) setUrl(atob(encodedUrl));
-    if (encodedQuery) setQuery(atob(encodedQuery));
+    if (encodedQuery) {
+      const decodedQuery = atob(encodedQuery).replace(/\\n/g, "\n");
+      setQuery(decodedQuery);
+    }
     if (encodedVariables) setVariables(atob(encodedVariables));
     if (headersParam) {
       try {

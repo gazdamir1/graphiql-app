@@ -1,0 +1,48 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--component-color);
+  padding: 12px var(--horizontal-padding);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  .logoWrapper {
+    display: flex;
+    width: 30%;
+  }
+
+  .languageToggle {
+    display: flex;
+    justify-content: center;
+    width: 30%;
+  }
+
+  .signNavigation {
+    display: flex;
+    justify-content: flex-end;
+    width: 30%;
+    gap: 10px;
+
+    .signNav {
+      display: flex;
+      cursor: pointer;
+      &:hover {
+        scale: 1.01;
+        color: blueviolet;
+      }
+    }
+  }
+
+  &.sticky {
+    padding: 10px var(--horizontal-padding);
+    background-color: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+}

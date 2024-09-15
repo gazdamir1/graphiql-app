@@ -1,0 +1,76 @@
+.graphiqlClientContainer {
+  width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+
+  color: var(--text-color);
+
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .clientSection,
+  .documentationSection {
+    border: 1px solid var(--text-color);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: var(--text-color);
+  }
+
+  .inputGroup {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+
+  .bodySection {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+
+  .documentationSection {
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #e6ffe6;
+    }
+  }
+}

@@ -1,0 +1,107 @@
+.historyPanelContainer {
+  width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+
+  button {
+    color: black;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: #6dcce9;
+    }
+  }
+
+  .historyHeader {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .historyList {
+    border: 1px solid var(--text-color);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+
+  .historyItem {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: var(--background-color);
+    gap: 10px;
+
+    .historyItemLink {
+      cursor: pointer;
+    }
+  }
+}
+
+.emptyState {
+  border: 1px solid var(--text-color);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 600px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
+
+  p {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .buttonGroup {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      color: black;
+      background-color: var(--text-color);
+      font-size: 14px;
+      font-weight: bold;
+
+      &.restButton {
+        background-color: var(--text-color);
+        color: black;
+
+        &:hover {
+          background-color: #6dcce9;
+        }
+      }
+
+      &.graphiqlButton {
+        background-color: #6a9949;
+        color: black;
+
+        &:hover {
+          background-color: rgb(121, 159, 93);
+        }
+      }
+    }
+  }
+}

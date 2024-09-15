@@ -32,10 +32,8 @@ describe("saveRequestToHistory", () => {
         "Content-Type": "application/json",
         Authorization: "Bearer token",
       },
-      body: JSON.stringify({
-        query,
-        variables: { id: 1 },
-      }),
+      query,
+      variables: { id: 1 },
       isGraphQL,
     })
   })
@@ -84,10 +82,8 @@ describe("saveRequestToHistory", () => {
         "Content-Type": "application/json",
         Authorization: "Bearer token",
       },
-      body: JSON.stringify({
-        query: query1,
-        variables: { id: 1 },
-      }),
+      query: query1,
+      variables: { id: 1 },
       isGraphQL: isGraphQL1,
     })
     expect(history[1]).toMatchObject({
@@ -96,10 +92,8 @@ describe("saveRequestToHistory", () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        query: query2,
-        variables: {},
-      }),
+      query: query2,
+      variables: null,
       isGraphQL: isGraphQL2,
     })
   })
@@ -122,10 +116,8 @@ describe("saveRequestToHistory", () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        query,
-        variables: {},
-      }),
+      query,
+      variables: null,
       isGraphQL,
     })
   })
@@ -146,10 +138,8 @@ describe("saveRequestToHistory", () => {
       method,
       url,
       headers: {},
-      body: JSON.stringify({
-        query,
-        variables: { id: 1 },
-      }),
+      query,
+      variables: { id: 1 },
       isGraphQL,
     })
   })

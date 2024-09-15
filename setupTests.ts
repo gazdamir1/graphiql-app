@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom"
 // setupTests.ts
 
 global.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {

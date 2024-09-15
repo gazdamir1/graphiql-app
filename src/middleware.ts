@@ -9,10 +9,13 @@ export function middleware(req: NextRequest) {
 
   const isValidLocale = locale === "en" || locale === "ru"
   if (!isValidLocale) {
-    if (locale === null) {
-      return NextResponse.redirect(new URL(`/en/${pathname}`, req.url))
-    }
-    return NextResponse.redirect(new URL(`/${locale}/${pathname}`, req.url))
+    const defaultLocale = "en"
+    const cleanPathname = pathname.startsWith("/")
+      ? pathname.slice(1)
+      : pathname
+    return NextResponse.redirect(
+      new URL(`/${defaultLocale}/${cleanPathname}`, req.url)
+    )
   }
 
   if (

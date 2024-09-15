@@ -11,3 +11,5 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id
 NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_firebase_measurement_id
 
 Replace `your_firebase_*` with the corresponding values from your Firebase project settings.
+
+To route to main page you can click on icon in left-up corner of page.
